@@ -1,0 +1,40 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<nav class="fixed-top w-100 d-flex align-items-center border-bottom justify-content-between px-3" style="height: 50px;">
+    <a href="/">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <p class="h6">{{request.user}}</p>
+
+    <a href="#">
+        <i class="far fa-square"></i>
+    </a>
+</nav>
+
+<main class="position-absolute w-100" style="top: 55px;">
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-10 col-lg-5 text-center">
+                <div class="h5 mt-5">Add your post here...</div>
+                <form action="/add/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="img" style="cursor: pointer;">
+                        <i class="far fa-plus bg-primary rounded-circle p-3 text-white mt-3"></i>
+                    </label>
+                    {{postform.img}}
+                    <div class="form-floating">
+                        {{postform.caption}}
+                        <label for="caption">Caption</label>
+                    </div>
+                    <button class="btn btn-primary">Publish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+{% endblock %}

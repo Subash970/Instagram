@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block content %}
+<nav class="fixed-top w-100 border d-flex align-items-center justify-content-around" style="height: 50px;">
+
+    <a href="/explore">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <form action="/search/" method="post" class="w-75">
+        {% csrf_token %}
+        <input type="search" name="user" class="form-control w-100" placeholder="Search..." autofocus>
+    </form>
+
+</nav>
+
+<main class="position-absolute w-100" style="top: 55px;font-size: 12px;">
+
+    {% if search_result_info %}
+    {% for i in search_result_info %}
+    <div class="message d-flex align-items-center px-3" style="height: 60px;">
+        <a href="/{{i.user}}" class="d-flex">
+            {% if i.img %}
+            <img src="{{i.img.url}}" alt="Image" class="object-fit-cover rounded-circle" height="45px" width="45px">
+            {% else %}
+            <img src="{% static 'img/user_profile.jpg' %}" alt="Image" class="object-fit-cover rounded-circle"
+                height="45px" width="45px">
+            {% endif %}
+            <ul class="list-unstyled ms-2">
+                <li>
+                    <strong>{{i.user}}</strong>
+                </li>
+                <li>{{i.username}}</li>
+            </ul>
+        </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    {% for message in messages %}
+    <p class="h6 text-center">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+
+</main>
+
+{% for j in messages %}
+<p class="h6 text-center mt-4">{{j}}</p>
+{% endfor %}
+
+{% endblock %}

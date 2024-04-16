@@ -1,0 +1,55 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+<div style="height: 100vh;">
+    <div class="body">
+        <main>
+
+            <div class="img-container">
+                <img src="{% static 'img/insta-name.png' %}" height="50px">
+            </div>
+
+            {% for i in messages %}
+            <p class="text-danger text-center">{{i}}</p>
+            {% endfor %}
+
+            <form action="/signup/" method="post">
+                {% csrf_token %}
+                <input name="username" type="text" placeholder="Username" id="ph" required><br>
+                <input name="password1" type="password" placeholder="Password" required>
+                <input name="password2" type="password" placeholder="Password again" required>
+                <button class="button" id="login" type="submit">Sign Up</button>
+            </form>
+
+            <div class="container mt-3">
+                <span class="forgot">Forgotten your login details?</span>
+            </div>
+
+            <div class="line">
+                <div class="before"></div>
+                <span>OR</span>
+                <div class="after"></div>
+            </div>
+
+            <div class="facebook">
+                <a href="#" style="text-decoration-line: none;color: dodgerblue;">
+                    <i class="fa-brands fa-facebook"></i>
+                    <span style="padding-left: 5px;">Log In With Facebook</span>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="foot-line"></div>
+        <a href="/login/">
+            <p>Dont't have an account?</p>
+        </a>
+    </footer>
+</div>
+
+{% endblock %}

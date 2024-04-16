@@ -1,0 +1,37 @@
+{% load static %}
+
+<style>
+    footer {
+        font-size: 22px;
+    }
+</style>
+
+<footer class="d-flex justify-content-around fixed-bottom w-100 bg-white border-top py-2 shadow">
+
+    <a href="/" class="d-flex justify-content-center">
+        <i class="fas fa-house"></i>
+    </a>
+
+    <a href="/explore" class="d-flex justify-content-center">
+        <i class="fas fa-search"></i>
+    </a>
+
+    <a href="/reels" class="d-flex justify-content-center">
+        <i class="fas fa-square-caret-right"></i>
+    </a>
+
+    <a href="/inbox" class="d-flex justify-content-center">
+        <i class="far fa-comment"></i>
+    </a>
+
+    <a href="/{{request.user}}" class="d-flex justify-content-center">
+        {% if auth_user_bio.img %}
+        <img src="{{auth_user_bio.img.url}}" class="rounded-circle object-fit-cover" alt="Profile" height="26px"
+            width="26px">
+        {% else %}
+        <img src="{% static 'img/user_profile.jpg' %}" class="rounded-circle object-fit-cover" alt="Profile"
+            height="26px" width="26px">
+        {% endif %}
+    </a>
+
+</footer>

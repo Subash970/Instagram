@@ -1,0 +1,168 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<nav class="fixed-top w-100 border-bottom d-flex align-items-center bg-white">
+    <a href="/">
+        <img src="{% static 'img/insta-name.png' %}" alt="Instagram" height="30px" class="ms-4">
+    </a>
+    <div class="ms-auto" style="font-size: 22px;">
+        <a href="/add/">
+            <i class="far fa-square-plus"></i>
+        </a>
+        <a href="#">
+            <i class="far fa-heart mx-3"></i>
+        </a>
+    </div>
+</nav>
+
+<section class="d-flex w-100 position-absolute overflow-x-auto overflow-y-hidden border-bottom">
+
+    <div class="story mx-2 text-center">
+        <a href="#">
+            {% if auth_user_bio.img %}
+            <img src="{{auth_user_bio.img.url}}" alt="Image" class="object-fit-cover rounded-circle mt-2 border-0"
+                height="50px" width="50px">
+            {% else %}
+            <img src="{% static 'img/user_profile.jpg' %}" alt="Image"
+                class="object-fit-cover rounded-circle mt-2 border-0" height="50px" width="50px">
+            {% endif %}
+            <p>Your Story</p>
+        </a>
+    </div>
+
+    <div class="story mx-2 text-center">
+        <a href="#">
+            <img src="{% static 'img/kakashi.jpg' %}" alt="Image" class="object-fit-cover rounded-circle mt-2"
+                height="50px" width="50px">
+            <p>_.subash._05</p>
+        </a>
+    </div>
+
+
+</section>
+
+
+<main class="position-absolute w-100" style="padding-bottom: 50px;">
+
+    {% for post in post_info %}
+    <div class="post border-bottom">
+        <div class="post-top d-flex align-items-center border-bottom px-2 py-2">
+            <a href="/{{post.post.user}}">
+                {% if post.bio_img %}
+                <img src="{{post.bio_img.url}}" alt="Image" class="object-fit-cover rounded-circle" width="30px"
+                    height="30px">
+                {% else %}
+                <img src="{% static 'img/user_profile.jpg' %}" alt="Image" class="object-fit-cover rounded-circle"
+                    width="30px" height="30px">
+                {% endif %}
+                <span class="fw-medium">{{post.post.user}}</span>
+            </a>
+
+            {% if post.post.user == request.user %}
+            <button class="ms-auto" data-bs-toggle="modal" data-bs-target="#delete">
+                <i class="fas fa-ellipsis"></i>
+            </button>
+
+            <div class="modal" id="delete">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title">
+                                <strong>are you sure do you want to delete this post..?
+                                </strong>
+                            </div>
+                            <button class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="{{post.post.img.url}}" alt="Image" class="object-fit-cover" height="120px"
+                                width="120px">
+                        </div>
+                        <div class="modal-footer">
+                            <form action="/delete_post/" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-danger" name="post_id" value="{{post.post.id}}">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="#" class="ms-auto">
+                <i class="fas fa-ellipsis"></i>
+            </a>
+            {% endif %}
+
+
+        </div>
+
+        <div class="post-main">
+            <img src="{{post.post.img.url}}" alt="Image" class="object-fit-cover w-100 h-100">
+        </div>
+
+        <div class="post-footer">
+            <div class="icon-container w-100 d-flex align-items-center gap-3 px-2">
+
+                <form action="/like/" method="post">
+                    {% csrf_token %}
+                    <button value="{{post.post.id}}" type="submit" name="post_id">
+                        {% if request.user in post.post.likes.all %}
+                        <i class="fas fa-heart" style="color: red;"></i>
+                        {% else %}
+                        <i class="far fa-heart"></i>
+                        {% endif %}
+                    </button>
+                </form>
+
+                <a href="/p/{{post.post.id}}/comment/">
+                    <i class="far fa-comment"></i>
+                </a>
+                <a href="#">
+                    <i class="far fa-paper-plane"></i>
+                </a>
+                <form action="/save/" method="post" class="ms-auto">
+                    {% csrf_token %}
+                    <button value="{{post.post.id}}" name="post_id" type="submit">
+                        {% if post.post in user_table.saved.all %}
+                        <i class="fas fa-bookmark"></i>
+                        {% else %}
+                        <i class="far fa-bookmark"></i>
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+            <div class="px-2 mb-2">
+                <a href="#">
+                    <strong>{{post.post.likes.all.count}} likes</strong>
+                </a><br>
+                <a href="#">
+                    <strong>{{post.post.user}}</strong>
+                </a>
+                <span class="text-muted">{{post.post.caption|truncatewords:20}}</span><br>
+                {% if post.comment %}
+                <a href="/p/{{post.post.id}}/comment/">
+                    <span class="text-muted">View all {{post.comment}} comments</span>
+                </a><br>
+                {% else %}
+                <a href="/p/{{post.post.id}}/comment/">
+                    <span class="text-muted">Add a comment</span>
+                </a><br>
+                {% endif %}
+                <span class="text-muted">{{post.post.upload_at}}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

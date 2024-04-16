@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<nav class="fixed-top w-100 d-flex align-items-center border-bottom justify-content-between px-3 bg-white"
+    style="height: 50px;">
+    <a href="/{{request.user}}">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <p class="h6">{{request.user}}</p>
+
+    <a href="#">
+        <i class="far fa-square"></i>
+    </a>
+</nav>
+
+<style>
+    .post {
+        width: 127px;
+        height: 127px;
+        background-position: center;
+        margin: 1px;
+    }
+</style>
+
+{% if user_saved %}
+<main class="position-absolute w-100 d-flex h-100 flex-wrap"
+    style="top: 55px;padding-bottom: 50px;">
+
+    {% for post in saved_posts %}
+    <div class="post">
+        <a href="/p/{{post.id}}">
+            <img src="{{post.img.url}}" alt="Image" class="object-fit-cover h-100 w-100">
+        </a>
+    </div>
+    {% endfor %}
+</main>
+{% else %}
+<main class="position-absolute w-100 mt-4" style="top: 50px;">
+    <p class="text-center">Try to save some posts</p>
+</main>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<nav class="fixed-top w-100 border-bottom d-flex align-items-center justify-content-between px-2" style="height: 50px;">
+    <a href="/{{user.username}}">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <strong>{{request.user}}</strong>
+    <a href="#">
+        <i class="fa-regular fa-pen-to-square"></i>
+    </a>
+</nav>
+
+<main class="position-absolute w-100" style="top: 55px;font-size: 12px;">
+
+    {% if user_friends_following_bio %}
+    {% for i in user_friends_following_bio %}
+
+    <div class="message d-flex align-items-center px-3" style="height: 60px;">
+        <a href="/{{i.user}}/" class="d-flex">
+            {% if i.img %}
+            <img src="{{i.img.url}}" alt="Image" class="object-fit-cover rounded-circle" height="45px" width="45px">
+            {% else %}
+            <img src="{% static 'img/user_profile.jpg' %}" alt="Image" class="object-fit-cover rounded-circle"
+                height="45px" width="45px">
+            {% endif %}
+            <ul class="list-unstyled ms-2">
+                <li>
+                    <strong>{{i.user}}</strong>
+                </li>
+                <li>{{i.username}}</li>
+            </ul>
+        </a>
+        {% if i.user in auth_user_friends_following %}
+        <form action="/unfollow/" method="post" class="ms-auto">
+            {% csrf_token %}
+            <button class="btn btn-secondary btn-sm" name="user" value="{{i.user}}">Following</button>
+        </form>
+        {% else %}
+        <form action="/follow/" method="post" class="ms-auto">
+            {% csrf_token %}
+            <button class="btn btn-primary btn-sm" name="user" value="{{i.user}}">Follow</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="text-center h3">Follow people to get attached</p>
+    {% endif %}
+
+</main>
+
+{% endblock %}

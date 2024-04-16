@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<nav class="fixed-top w-100 border-bottom align-items-center d-flex justify-content-between px-3" style="height: 50px;">
+    <a href="/">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <p class="h4">{{post.user}}</p>
+    <p></p>
+</nav>
+
+<main style="padding-bottom: 50px;top: 50px;" class="px-2 position-absolute w-100">
+
+    {% if post_comments_get %}
+    {% for i in post_comments %}
+    <div class="comment my-4" style="font-size: 13px;">
+        <a href="/{{i.post_comments.user}}/">
+            {% if i.user_img %}
+            <img src="{{i.user_img.url}}" alt="Image" class="object-fit-cover rounded-circle" height="30px"
+                width="30px">
+            {% else %}
+            <img src="{% static 'img/user_profile.jpg' %}" alt="Image" class="object-fit-cover rounded-circle"
+                height="30px" width="30px">
+            {% endif %}
+        </a>
+        <a href="/{{i.post_comments.user}}/">
+            <strong class="ms-2">{{i.post_comments.user}}</strong>
+        </a>
+        <span class="text-muted">{{i.post_comments.comment}}</span><br>
+        <span style="font-size: 10px;">{{i.post_comments.commented_on}}</span>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="text-center h3 mt-5">No Comments yet.</p>
+    <p class="text-center text-muted">Start the conversation.</p>
+    {% endif %}
+</main>
+
+<form action="/new_comment/" method="post" class="fixed-bottom w-100 mb-3 border-top" style="height: 50px;">
+    {% csrf_token %}
+    <div class="container">
+        <input name="post" type="hidden" value="{{post.id}}">
+        {{commentform.comment}}
+    </div>
+</form>
+
+{% endblock %}

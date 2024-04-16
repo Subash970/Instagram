@@ -1,0 +1,17 @@
+nav {
+    height: 50px;
+}
+
+main {
+    top: 50px;
+}
+
+#list {
+    height: 50px;
+}
+
+.post {
+    width: 33%;
+    height: 33%;
+    margin: 0.3% 0;
+}
