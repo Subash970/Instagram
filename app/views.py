@@ -4,12 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User , auth
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from .models import UserBio , UserFriends , Post , UserTable , Comments
-from .forms import UserBioForm , PostForm , CommentForm
-from django.utils.timesince import timesince
-from django.utils import timezone
-from datetime import datetime
-from datetime import  timedelta
+from .models import *
+from .forms import *
 
 # Create your views here.
 

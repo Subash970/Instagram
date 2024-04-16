@@ -33,7 +33,7 @@
             </ul>
         </a>
         {% if i.user in auth_user_friends_following %}
-        <form action="/unfollow/" method="post" class="ms-auto">`
+        <form action="/unfollow/" method="post" class="ms-auto">
             {% csrf_token %}
             <button class="btn btn-secondary btn-sm" name="user" value="{{i.user}}">Following</button>
         </form>
